@@ -26,7 +26,8 @@ public class Users implements UserDetails {
     private String email;
     private String phone;
     private String address;
-    private Role role;
+    private String role=Role.USER.name();
+    // list role
 
     @Override
     public String getPassword(){
@@ -41,7 +42,7 @@ public class Users implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority>authorities= new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(role.name())); // if multiple role
+        authorities.add(new SimpleGrantedAuthority(role)); // if multiple role
         return authorities;
     }
 

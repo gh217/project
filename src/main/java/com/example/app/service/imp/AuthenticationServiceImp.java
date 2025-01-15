@@ -1,6 +1,6 @@
 package com.example.app.service.imp;
 
-import com.example.app.dto.SignUpDto;
+import com.example.app.dto.SignUpRequestDto;
 import com.example.app.entity.Role;
 import com.example.app.entity.Users;
 import com.example.app.repo.UsersRepo;
@@ -17,14 +17,16 @@ public class AuthenticationServiceImp implements AuthenticationService {
 
     private final PasswordEncoder passwordEncoder;
 
-    public Users sighUp(SignUpDto signUpDto){
+    public Users sighUp(SignUpRequestDto signUpRequestDto){
         Users users=new Users();
-        users.setEmail(signUpDto.getEmail());
-        users.setName(signUpDto.getName());
-        users.setPassword(signUpDto.getPassword());
-        if(signUpDto.isAdmin())users.setRole(Role.ADMIN);
-        if(signUpDto.isUser())users.setRole(Role.USER);
-        users.setPassword(passwordEncoder.encode(signUpDto.getPassword()));
+        users.setEmail(signUpRequestDto.getEmail());
+        users.setName(signUpRequestDto.getName());
+        users.setPassword(signUpRequestDto.getPassword());
+        if(signUpRequestDto.isAdmin())users.setRole(Role.ADMIN.name());
+        if(signUpRequestDto.isUser())users.setRole(Role.USER.name());
+        users.setPassword(passwordEncoder.encode(signUpRequestDto.getPassword()));
+
+        System.out.println(users.getRole());
         return usersRepo.save(users);
     }
 
