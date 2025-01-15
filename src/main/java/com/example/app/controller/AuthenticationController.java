@@ -1,6 +1,7 @@
 package com.example.app.controller;
 
 import com.example.app.dto.JwtAuthenticationResponseDto;
+import com.example.app.dto.RefreshTokenRequestDto;
 import com.example.app.dto.SignInRequestDto;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -36,6 +37,12 @@ public class AuthenticationController {
 
          return ResponseEntity.ok(authenticationService.singin(signInRequestDto));
     }
+
+    @PostMapping("/refreshToken")
+    public ResponseEntity<JwtAuthenticationResponseDto> refresh(@RequestBody RefreshTokenRequestDto refreshTokenRequestDto) {
+        return ResponseEntity.ok(authenticationService.refreshToken(refreshTokenRequestDto));
+    }
+
 
 
 }

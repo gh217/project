@@ -34,6 +34,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     throws ServletException, IOException {
 
         final String authorization = request.getHeader("Authorization");
+
         final String jwt;
         final String userName;
 
@@ -44,6 +45,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         jwt = authorization.substring(7);
         userName=jwtService.getUserNameFromJwtToken(jwt);
+
+        System.out.println("mooo" + userName);
 
         if(StringUtils.isEmpty(userName)&& SecurityContextHolder.getContext().getAuthentication()==null){
 

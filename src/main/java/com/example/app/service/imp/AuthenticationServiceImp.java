@@ -1,6 +1,7 @@
 package com.example.app.service.imp;
 
 import com.example.app.dto.JwtAuthenticationResponseDto;
+import com.example.app.dto.RefreshTokenRequestDto;
 import com.example.app.dto.SignInRequestDto;
 import com.example.app.dto.SignUpRequestDto;
 import com.example.app.entity.Role;
@@ -51,4 +52,18 @@ public class AuthenticationServiceImp implements AuthenticationService {
          return jwtAuthenticationResponseDto;
     }
 
+    public JwtAuthenticationResponseDto refreshToken(RefreshTokenRequestDto refreshTokenRequestDto){
+        String email=jwtService.getUserNameFromJwtToken(refreshTokenRequestDto.getToken());
+        Users users=usersRepo.findByEmail(email).orElseThrow();
+
+        if(jwtService.isTokenValid(refreshTokenRequestDto.getToken(),users)){
+            var jwt=jwtService.generateToken(users);
+
+            JwtAuthenticationResponseDto jwtAuthenticationResponseDto=new JwtAuthenticationResponseDto();
+            jwtAuthenticationResponseDto.setToken(jwt);
+            jwtAuthenticationResponseDto.setRefreshToken(refreshTokenRequestDto.getToken());
+            return jwtAuthenticationResponseDto;
+        }
+        return null;
+    }
 }

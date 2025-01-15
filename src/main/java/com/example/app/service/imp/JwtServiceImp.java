@@ -22,12 +22,14 @@ import java.util.function.Function;
 public class JwtServiceImp implements JwtService {
 
     private final static SecretKey secretKey = Keys.secretKeyFor(io.jsonwebtoken.SignatureAlgorithm.HS512);
-    private final String KEY =  Base64.getEncoder().encodeToString(secretKey.getEncoded());
+//    private final String KEY =  Base64.getEncoder().encodeToString(secretKey.getEncoded());
+
+    private final String KEY="456sf4g654s6h4456sf4g654s6h44fghf456sf4g654s6h44fghf456sf4g654s6h44fghf456sf4g654s6h44fghf456sf4g654s6h44fghf456sf4g654s6h44fghf4fghf";
 
     public String generateToken(UserDetails userDetails) {
         return  Jwts.builder().setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis()*1000*60*60))
+                .setExpiration(new Date(System.currentTimeMillis()+1000*60*60*24))
                 .signWith(getSighnedKey(), SignatureAlgorithm.HS512)
                 .compact();
     }
@@ -60,7 +62,7 @@ public class JwtServiceImp implements JwtService {
     public String generateRefreshToken(HashMap<String, Object> extracClaim, UserDetails usersDetails) {
         return  Jwts.builder().setClaims(extracClaim).setSubject(usersDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis()+6040000000L))
+                .setExpiration(new Date(System.currentTimeMillis()+1000*60*60*24*7))
                 .signWith(getSighnedKey(), SignatureAlgorithm.HS512)
                 .compact();
     }
