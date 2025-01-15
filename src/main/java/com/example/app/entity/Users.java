@@ -15,7 +15,8 @@ import java.util.List;
 @Setter
 @Getter
 @Entity
-@Table(name = "users")
+@Table(name = "users",
+        indexes = @Index(name = "idx_email", columnList = "email", unique = true))
 public class Users implements UserDetails {
 
     @Id
@@ -24,10 +25,13 @@ public class Users implements UserDetails {
     private String name;
     private String password;
     private String email;
+    @Column(unique = true)
     private String phone;
     private String address;
-    private String role=Role.USER.name();
-    // list role
+
+    @Enumerated(EnumType.STRING)
+    private Role role=Role.USER;
+    // list<Role>   this is the best
 
     @Override
     public String getPassword(){
@@ -42,7 +46,7 @@ public class Users implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority>authorities= new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(role)); // if multiple role
+        authorities.add(new SimpleGrantedAuthority(role.name())); // if multiple role
         return authorities;
     }
 
