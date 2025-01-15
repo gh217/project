@@ -21,8 +21,6 @@ import java.util.function.Function;
 @Service
 public class JwtServiceImp implements JwtService {
 
-    private final static SecretKey secretKey = Keys.secretKeyFor(io.jsonwebtoken.SignatureAlgorithm.HS512);
-//    private final String KEY =  Base64.getEncoder().encodeToString(secretKey.getEncoded());
 
     private final String KEY="456sf4g654s6h4456sf4g654s6h44fghf456sf4g654s6h44fghf456sf4g654s6h44fghf456sf4g654s6h44fghf456sf4g654s6h44fghf456sf4g654s6h44fghf4fghf";
 
