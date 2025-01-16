@@ -16,7 +16,6 @@ public class UserServiceImp implements UserService {
 
 //    @Override
 //    public UserDetailsService userDetailsService(){
-//
 //        return (username)->{
 //            return usersRepo.findByUsername(username)
 //                    .orElseThrow(()->new UsernameNotFoundException("User not found"));

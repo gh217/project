@@ -22,8 +22,6 @@ import java.util.function.Function;
 public class JwtServiceImp implements JwtService {
 
 
-    private final String KEY="456sf4g654s6h4456sf4g654s6h44fghf456sf4g654s6h44fghf456sf4g654s6h44fghf456sf4g654s6h44fghf456sf4g654s6h44fghf456sf4g654s6h44fghf4fghf";
-
     public String generateToken(UserDetails userDetails) {
         return  Jwts.builder().setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
@@ -47,8 +45,8 @@ public class JwtServiceImp implements JwtService {
     }
 
     private Key getSighnedKey() {
-        byte[] key = Decoders.BASE64.decode(KEY);
-        return Keys.hmacShaKeyFor(key);
+        byte[] keyBytes = Decoders.BASE64.decode("wZqLw8uJv9XkR1L8pTgJmN3nY6FbD2cZsQxR9mP7tLkXv9WqLw8uJv9XkR1L8pTgJmN3nY6FbD2cZsQxR9mP7tLkXv9W==");
+        return Keys.hmacShaKeyFor(keyBytes);
     }
 
     public boolean isTokenValid(String token , UserDetails userDetails){

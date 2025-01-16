@@ -30,10 +30,10 @@ public class AuthenticationServiceImp implements AuthenticationService {
         Users users=new Users();
         users.setEmail(signUpRequestDto.getEmail());
         users.setName(signUpRequestDto.getName());
-        users.setPassword(signUpRequestDto.getPassword());
+        users.setPassword(passwordEncoder.encode(signUpRequestDto.getPassword()));
+
         if(signUpRequestDto.getIsAdmin()==1)users.setRole(Role.ADMIN);
         if(signUpRequestDto.getIsUser()==1)users.setRole(Role.USER);
-        users.setPassword(passwordEncoder.encode(signUpRequestDto.getPassword()));
         return usersRepo.save(users);
     }
 
