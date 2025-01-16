@@ -10,6 +10,7 @@ import com.example.app.repo.UsersRepo;
 import com.example.app.service.AuthenticationService;
 import com.example.app.service.JwtService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,6 +20,7 @@ import java.util.HashMap;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class AuthenticationServiceImp implements AuthenticationService {
 
     private final UsersRepo usersRepo;
@@ -32,8 +34,8 @@ public class AuthenticationServiceImp implements AuthenticationService {
         users.setName(signUpRequestDto.getName());
         users.setPassword(passwordEncoder.encode(signUpRequestDto.getPassword()));
 
-        if(signUpRequestDto.getIsAdmin()==1)users.setRole(Role.ADMIN);
-        if(signUpRequestDto.getIsUser()==1)users.setRole(Role.USER);
+        if(signUpRequestDto.getUser()==1)users.setRole(Role.USER);
+        if(signUpRequestDto.getAdmin()==1)users.setRole(Role.ADMIN);
         return usersRepo.save(users);
     }
 
@@ -53,7 +55,7 @@ public class AuthenticationServiceImp implements AuthenticationService {
     }
 
     public JwtAuthenticationResponseDto refreshToken(RefreshTokenRequestDto refreshTokenRequestDto){
-        String email=jwtService.getUserNameFromJwtToken(refreshTokenRequestDto.getToken());
+        String email=jwtService.extractUserName(refreshTokenRequestDto.getToken());
         Users users=usersRepo.findByEmail(email).orElseThrow();
 
         if(jwtService.isTokenValid(refreshTokenRequestDto.getToken(),users)){

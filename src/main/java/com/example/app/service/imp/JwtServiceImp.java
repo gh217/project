@@ -1,37 +1,38 @@
 package com.example.app.service.imp;
 
 
-import com.example.app.entity.Users;
 import com.example.app.service.JwtService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import javax.crypto.SecretKey;
 import java.security.Key;
-import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 public class JwtServiceImp implements JwtService {
 
 
     public String generateToken(UserDetails userDetails) {
-        return  Jwts.builder().setSubject(userDetails.getUsername())
+        return  Jwts.builder()
+                .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis()+1000*60*60*24))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
                 .signWith(getSighnedKey(), SignatureAlgorithm.HS512)
                 .compact();
     }
 
 
-    public String getUserNameFromJwtToken(String token) {
+    public String extractUserName(String token) {
         return extractClaims(token, Claims::getSubject);
     }
 
@@ -50,13 +51,16 @@ public class JwtServiceImp implements JwtService {
     }
 
     public boolean isTokenValid(String token , UserDetails userDetails){
-        String username = getUserNameFromJwtToken(token);
+        String username = extractUserName(token);
         return (username.equals(userDetails.getUsername())&& !isTokenExpired(token));
     }
 
     @Override
     public String generateRefreshToken(HashMap<String, Object> extracClaim, UserDetails usersDetails) {
-        return  Jwts.builder().setClaims(extracClaim).setSubject(usersDetails.getUsername())
+
+        return  Jwts.builder()
+                .setClaims(extracClaim)
+                .setSubject(usersDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis()+1000*60*60*24*7))
                 .signWith(getSighnedKey(), SignatureAlgorithm.HS512)
@@ -66,5 +70,6 @@ public class JwtServiceImp implements JwtService {
     private boolean isTokenExpired(String token) {
         return extractClaims(token,Claims::getExpiration).before(new Date());
     }
+
 
 }

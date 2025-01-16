@@ -4,6 +4,7 @@ package com.example.app.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+@Slf4j
 @Setter
 @Getter
 @Entity
@@ -45,9 +47,7 @@ public class Users implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<SimpleGrantedAuthority>authorities= new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(role.name())); // if multiple role
-        return authorities;
+        return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
     @Override

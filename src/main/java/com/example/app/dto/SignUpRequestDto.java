@@ -11,6 +11,6 @@ public class SignUpRequestDto {
     private String email;
     private String password;
 
-    private int isAdmin=0;
-    private int isUser=0;
+    private int admin;
+    private int user;
 }

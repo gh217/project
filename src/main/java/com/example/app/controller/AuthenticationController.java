@@ -31,6 +31,7 @@ public class AuthenticationController {
     @PostMapping("/singup")
     public ResponseEntity<Users> register(@RequestBody SignUpRequestDto signUpRequestDto) {
         Users users=authenticationService.sighUp(signUpRequestDto);
+        log.info("user registered successfully  "+signUpRequestDto.getAdmin());
         return  ResponseEntity.ok().body(users);
     }
 

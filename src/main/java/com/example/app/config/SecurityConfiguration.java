@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -33,7 +34,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/v1/show/**").permitAll() //play
                         .requestMatchers("/api/v1/auth/**").permitAll()
                         .requestMatchers("/api/v1/admin/**").hasAnyAuthority(Role.ADMIN.name())
-                        .requestMatchers("/api/v1/user/**").hasAnyAuthority(Role.ADMIN.name(),Role.USER.name())
+                        .requestMatchers("/api/v1/user/**").hasAnyAuthority(Role.USER.name())
                         .anyRequest().authenticated()
 //                                .anyRequest().permitAll()
 
@@ -54,7 +55,7 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    public BCryptPasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
 

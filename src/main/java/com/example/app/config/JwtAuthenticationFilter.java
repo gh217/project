@@ -7,6 +7,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -22,6 +23,7 @@ import java.io.IOException;
 @EnableWebSecurity
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
@@ -34,7 +36,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     throws ServletException, IOException {
 
         final String authorization = request.getHeader("Authorization");
-
         final String jwt;
         final String userName;
 
@@ -44,11 +45,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         jwt = authorization.substring(7);
-        userName=jwtService.getUserNameFromJwtToken(jwt);
+        userName=jwtService.extractUserName(jwt);
 
-        System.out.println("mooo" + userName);
 
-        if(StringUtils.isEmpty(userName)&& SecurityContextHolder.getContext().getAuthentication()==null){
+        if(StringUtils.isNotEmpty(userName)&& SecurityContextHolder.getContext().getAuthentication()==null){
 
             UserDetails userDetails = userService.userDetailsService().loadUserByUsername(userName);
 
@@ -60,8 +60,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 token.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 securityContext.setAuthentication(token);
                 SecurityContextHolder.setContext(securityContext);
+
             }
         }
         filterChain.doFilter(request,response);
     }
+
+
 }
