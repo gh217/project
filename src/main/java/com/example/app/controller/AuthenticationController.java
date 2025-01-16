@@ -41,18 +41,10 @@ public class AuthenticationController {
          return ResponseEntity.ok(authenticationService.singin(signInRequestDto));
     }
 
-    @PostMapping("/refreshToken")
-    public ResponseEntity<JwtAuthenticationResponseDto> refresh(@RequestBody RefreshTokenRequestDto refreshTokenRequestDto) {
-        return ResponseEntity.ok(authenticationService.refreshToken(refreshTokenRequestDto));
-    }
 
     @PostMapping("/checkToken")
     public Boolean checkToken(@Param("token") String token , @Param("email") String email) {
         return jwtService.isTokenValid(token,usersRepo.findByEmail(email).orElseThrow());
     }
-
-
-
-
 
 }

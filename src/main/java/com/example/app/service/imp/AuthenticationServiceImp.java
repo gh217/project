@@ -45,27 +45,12 @@ public class AuthenticationServiceImp implements AuthenticationService {
                  signInRequestDto.getPassword()));
 
          var users=usersRepo.findByEmail(signInRequestDto.getEmail()).orElseThrow(()->new RuntimeException("User not found"));
-         var jwt=jwtService.generateToken(users);
-         var refreshToken =jwtService.generateRefreshToken(new HashMap<>(),users);
+         var jwt=jwtService.generateToken(new HashMap<>(),users);
+         var refreshToken =jwtService.generateToken(new HashMap<>(),users);
 
          JwtAuthenticationResponseDto jwtAuthenticationResponseDto=new JwtAuthenticationResponseDto();
          jwtAuthenticationResponseDto.setToken(jwt);
-         jwtAuthenticationResponseDto.setRefreshToken(refreshToken);
          return jwtAuthenticationResponseDto;
     }
 
-    public JwtAuthenticationResponseDto refreshToken(RefreshTokenRequestDto refreshTokenRequestDto){
-        String email=jwtService.extractUserName(refreshTokenRequestDto.getToken());
-        Users users=usersRepo.findByEmail(email).orElseThrow();
-
-        if(jwtService.isTokenValid(refreshTokenRequestDto.getToken(),users)){
-            var jwt=jwtService.generateToken(users);
-
-            JwtAuthenticationResponseDto jwtAuthenticationResponseDto=new JwtAuthenticationResponseDto();
-            jwtAuthenticationResponseDto.setToken(jwt);
-            jwtAuthenticationResponseDto.setRefreshToken(refreshTokenRequestDto.getToken());
-            return jwtAuthenticationResponseDto;
-        }
-        return null;
-    }
 }

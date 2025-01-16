@@ -21,16 +21,17 @@ import java.util.stream.Collectors;
 @Service
 public class JwtServiceImp implements JwtService {
 
+    private final String KEY_SEC="wZqLw8uJv9XkR1L8pTgJmN3nY6FbD2cZsQxR9mP7tLkXv9WqLw8uJv9XkR1L8pTgJmN3nY6FbD2cZsQxR9mP7tLkXv9W==";
+    public String generateToken(HashMap<String, Object> extracClaim, UserDetails usersDetails) {
 
-    public String generateToken(UserDetails userDetails) {
         return  Jwts.builder()
-                .setSubject(userDetails.getUsername())
+                .setClaims(extracClaim)
+                .setSubject(usersDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
+                .setExpiration(new Date(System.currentTimeMillis()+1000*60*60*24*7))
                 .signWith(getSighnedKey(), SignatureAlgorithm.HS512)
                 .compact();
     }
-
 
     public String extractUserName(String token) {
         return extractClaims(token, Claims::getSubject);
@@ -46,7 +47,7 @@ public class JwtServiceImp implements JwtService {
     }
 
     private Key getSighnedKey() {
-        byte[] keyBytes = Decoders.BASE64.decode("wZqLw8uJv9XkR1L8pTgJmN3nY6FbD2cZsQxR9mP7tLkXv9WqLw8uJv9XkR1L8pTgJmN3nY6FbD2cZsQxR9mP7tLkXv9W==");
+        byte[] keyBytes = Decoders.BASE64.decode(KEY_SEC);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
@@ -55,17 +56,6 @@ public class JwtServiceImp implements JwtService {
         return (username.equals(userDetails.getUsername())&& !isTokenExpired(token));
     }
 
-    @Override
-    public String generateRefreshToken(HashMap<String, Object> extracClaim, UserDetails usersDetails) {
-
-        return  Jwts.builder()
-                .setClaims(extracClaim)
-                .setSubject(usersDetails.getUsername())
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis()+1000*60*60*24*7))
-                .signWith(getSighnedKey(), SignatureAlgorithm.HS512)
-                .compact();
-    }
 
     private boolean isTokenExpired(String token) {
         return extractClaims(token,Claims::getExpiration).before(new Date());
