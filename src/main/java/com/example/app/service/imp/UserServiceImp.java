@@ -1,6 +1,6 @@
 package com.example.app.service.imp;
 
-import com.example.app.repo.UsersRepo;
+import com.example.app.repo.UsersRepository;
 import com.example.app.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserServiceImp implements UserService {
 
-    private final UsersRepo usersRepo;
+    private final UsersRepository usersRepository;
 
 //    @Override
 //    public UserDetailsService userDetailsService(){
@@ -27,7 +27,7 @@ public class UserServiceImp implements UserService {
         return new UserDetailsService() {
             @Override
             public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-                return usersRepo.findByEmail(username)
+                return usersRepository.findByEmail(username)
                     .orElseThrow(()->new UsernameNotFoundException("User not found"));
             }
         };

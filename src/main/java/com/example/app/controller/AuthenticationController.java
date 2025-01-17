@@ -1,12 +1,9 @@
 package com.example.app.controller;
 
 import com.example.app.dto.JwtAuthenticationResponseDto;
-import com.example.app.dto.RefreshTokenRequestDto;
 import com.example.app.dto.SignInRequestDto;
-import com.example.app.repo.UsersRepo;
+import com.example.app.repo.UsersRepository;
 import org.springframework.data.repository.query.Param;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.example.app.dto.SignUpRequestDto;
@@ -25,7 +22,7 @@ public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
     private final JwtService jwtService;
-    private final UsersRepo usersRepo;
+    private final UsersRepository usersRepository;
 
 
     @PostMapping("/singup")
@@ -44,7 +41,7 @@ public class AuthenticationController {
 
     @PostMapping("/checkToken")
     public Boolean checkToken(@Param("token") String token , @Param("email") String email) {
-        return jwtService.isTokenValid(token,usersRepo.findByEmail(email).orElseThrow());
+        return jwtService.isTokenValid(token, usersRepository.findByEmail(email).orElseThrow());
     }
 
 }
