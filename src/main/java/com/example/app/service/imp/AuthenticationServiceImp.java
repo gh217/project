@@ -46,7 +46,6 @@ public class AuthenticationServiceImp implements AuthenticationService {
 
          var users=usersRepo.findByEmail(signInRequestDto.getEmail()).orElseThrow(()->new RuntimeException("User not found"));
          var jwt=jwtService.generateToken(new HashMap<>(),users);
-         var refreshToken =jwtService.generateToken(new HashMap<>(),users);
 
          JwtAuthenticationResponseDto jwtAuthenticationResponseDto=new JwtAuthenticationResponseDto();
          jwtAuthenticationResponseDto.setToken(jwt);
