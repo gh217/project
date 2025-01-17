@@ -6,6 +6,7 @@ import com.example.app.entity.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface RatingRepository extends JpaRepository<Rating, Long>{
-    boolean existsByUsersAndMovie(Users user, Movie movie); // Check if user already rated the movie
+    boolean existsByUsersAndMovie(Users user, Movie movie); // Check if user already rated the movie prevent duplicate
+    void deleteByUsersAndMovie(Users users, Movie movie); // Delete rating by user and movie
 
 }

@@ -8,8 +8,8 @@ import org.springframework.http.ResponseEntity;
 
 import com.example.app.dto.SignUpRequestDto;
 import com.example.app.entity.Users;
-import com.example.app.service.AuthenticationService;
-import com.example.app.service.JwtService;
+import com.example.app.security.AuthenticationService;
+import com.example.app.security.JwtService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;

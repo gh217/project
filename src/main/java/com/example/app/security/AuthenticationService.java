@@ -1,4 +1,4 @@
-package com.example.app.service;
+package com.example.app.security;
 
 import com.example.app.dto.JwtAuthenticationResponseDto;
 import com.example.app.dto.SignInRequestDto;

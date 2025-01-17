@@ -1,7 +1,7 @@
 package com.example.app.config;
 
-import com.example.app.service.JwtService;
-import com.example.app.service.UserService;
+import com.example.app.security.JwtService;
+import com.example.app.security.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

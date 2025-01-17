@@ -7,13 +7,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/show")
+@RequestMapping("/api/v1/movies")
 @RequiredArgsConstructor
 public class ShowController {
 
     @GetMapping
     public Object test(){
-        return " show all";
+        return " show all movies";
     }
 
 
