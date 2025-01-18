@@ -2,12 +2,9 @@ package com.example.app.controller;
 
 
 import com.example.app.dto.MovieDto;
-import com.example.app.entity.Movie;
-import com.example.app.entity.Users;
 import com.example.app.service.MovieService;
 import com.example.app.service.RatingService;
 import com.example.app.service.ReplyService;
-import com.example.app.service.UsersService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
