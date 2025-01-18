@@ -8,22 +8,24 @@ import com.example.app.exception.NotFoundUserExc;
 import com.example.app.repo.MovieRepository;
 import com.example.app.repo.ReplyRepository;
 import com.example.app.repo.UsersRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class ReplyService {
-    @Autowired
-    private ReplyRepository replyRepository;
-    @Autowired
-    private UsersRepository usersRepository;
-    @Autowired
-    private MovieRepository movieRepository;
+
+    private final ReplyRepository replyRepository;
+
+    private final UsersService usersService;
+
+    private final MovieService movieService;
 
     public String addReply(Long userId, Long movieId, String replyText) {
-        Users user = usersRepository.findById(userId).orElseThrow(() -> new NotFoundUserExc("User not found"));
-        Movie movie = movieRepository.findById(movieId).orElseThrow(() -> new NotFoundMovieExc("Movie not found"));
+        Users user = usersService.userById(userId);
+        Movie movie = movieService.movieById(movieId);
 
         Reply reply = new Reply();
         reply.setUsers(user);
@@ -33,11 +35,11 @@ public class ReplyService {
         return "Reply added successfully!";
     }
 
-    public String deleteReply(Long userId, Long movieId) {
-        Users user = usersRepository.findById(userId).orElseThrow(() -> new NotFoundUserExc("User not found"));
-        Movie movie = movieRepository.findById(movieId).orElseThrow(() -> new NotFoundMovieExc("Movie not found"));
+    public String deleteReply(Long movieId,Long userId) {
+        Users users=usersService.userById(userId);
+        Movie movie=movieService.movieById(movieId);
 
-        replyRepository.deleteByUsersAndMovie(user, movie);
+        replyRepository.deleteRateByUser(movie.getMovieId(), users.getId());
         return "Reply deleted successfully!";
 
     }

@@ -5,8 +5,6 @@ import com.example.app.entity.Movie;
 import com.example.app.mapper.MoviesMapper;
 import com.example.app.repo.MovieRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -34,10 +32,12 @@ public class MovieService {
 
 
     public MovieDto getMovie(Long movieId) {
-
         Movie movie= movieRepository.findById(movieId).orElseThrow(() -> new RuntimeException("Movie not found"));
         return moviesMapper.tomovieDto(movie);
     }
 
+    public Movie movieById(Long movieId) {
+        return movieRepository.findById(movieId).orElseThrow(() -> new RuntimeException("Movie not found"));
+    }
 
 }

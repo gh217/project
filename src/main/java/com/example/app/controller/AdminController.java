@@ -40,7 +40,7 @@ public class AdminController {
         return ratingService.deleteRating(movieId,userId);
     }
 
-    
+
     @PostMapping("/movies/{movieId}/reply/{userId}")
     public String addReply(@PathVariable Long movieId, @PathVariable Long userId, @RequestParam String replyText) {
         return replyService.addReply(userId, movieId, replyText);
@@ -49,8 +49,7 @@ public class AdminController {
 
     @DeleteMapping("/movies/{movieId}/reply/{userId}")
     public String deleteReply(@PathVariable Long movieId, @PathVariable Long userId) {
-        return replyService.deleteReply(userId, movieId);
+        return replyService.deleteReply( movieId,userId);
     }
-
 
 }

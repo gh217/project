@@ -18,8 +18,7 @@ public class UsersService {
 
     private final UsersMapper usersMapper;
 
-    private UsersRepository usersRepository;
-
+    private final UsersRepository usersRepository;
 
     @Cacheable("users")
     public List<UsersDto> getAllUsers() {
@@ -36,5 +35,9 @@ public class UsersService {
         return usersMapper.toUsersDto(users);
     }
 
+    @Cacheable(value = "user",key = "#userId")
+    public Users userById(Long userId) {
+        return usersRepository.findById(userId).orElseThrow(() -> new NotFoundUserExc("User not found"));
+    }
 
 }

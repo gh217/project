@@ -3,28 +3,21 @@ package com.example.app.service;
 import com.example.app.entity.Movie;
 import com.example.app.entity.Rating;
 import com.example.app.entity.Users;
-import com.example.app.exception.NotFoundMovieExc;
-import com.example.app.exception.NotFoundUserExc;
-import com.example.app.repo.MovieRepository;
 import com.example.app.repo.RatingRepository;
-import com.example.app.repo.UsersRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class RatingService {
-    @Autowired
-    private RatingRepository ratingRepository;
-    @Autowired
-    private UsersRepository usersRepository;
-    @Autowired
-    private MovieRepository movieRepository;
+    private final RatingRepository ratingRepository;
+    private final UsersService usersService;
+    private final MovieService movieService ;
 
 
     public String addRating(Long userId, Long movieId, int ratingValue) {
-        Users user = usersRepository.findById(userId).orElseThrow(() -> new NotFoundUserExc("User not found"));
-        Movie movie = movieRepository.findById(movieId).orElseThrow(() -> new NotFoundMovieExc("Movie not found"));
+        Users user = usersService.userById(userId);
+        Movie movie = movieService.movieById(movieId);
 
         if (ratingRepository.existsByUsersAndMovie(user, movie)) {
             return "You have already rated this movie!";
@@ -39,10 +32,10 @@ public class RatingService {
     }
 
     public String deleteRating(Long userId, Long movieId) {
-        Users user = usersRepository.findById(userId).orElseThrow(() -> new NotFoundUserExc("User not found"));
-        Movie movie = movieRepository.findById(movieId).orElseThrow(() -> new NotFoundMovieExc("Movie not found"));
+        Users user = usersService.userById(userId);
+        Movie movie = movieService.movieById(movieId);
 
-        ratingRepository.deleteRateByUser(movieId, userId);
+        ratingRepository.deleteRateByUser(movie.getMovieId(), user.getId());
         return "Rating deleted successfully!";
     }
 
