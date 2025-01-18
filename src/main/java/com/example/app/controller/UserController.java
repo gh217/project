@@ -1,9 +1,8 @@
 package com.example.app.controller;
 
 
-import com.example.app.dto.MovieDto;
-import com.example.app.entity.Movie;
-import com.example.app.service.MovieService;
+import com.example.app.dto.UsersDto;
+import com.example.app.service.UsersService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,11 +11,11 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final MovieService movieService;
+    private final UsersService usersService;
 
-    @PostMapping("/movies")
-    public MovieDto createMovie(@RequestParam String title) {
-        return movieService.createMovie(title);
+    @GetMapping("/{id}")
+    public UsersDto getUser(@PathVariable Long id) {
+        return usersService.getUser(id);
     }
 
 }
