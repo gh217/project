@@ -18,7 +18,6 @@ public class UsersService {
 
     private final UsersMapper usersMapper;
 
-    @Autowired
     private UsersRepository usersRepository;
 
 

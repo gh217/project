@@ -21,7 +21,7 @@ public class ReplyService {
     @Autowired
     private MovieRepository movieRepository;
 
-    public ResponseEntity<?> addReply(Long userId, Long movieId, String replyText) {
+    public String addReply(Long userId, Long movieId, String replyText) {
         Users user = usersRepository.findById(userId).orElseThrow(() -> new NotFoundUserExc("User not found"));
         Movie movie = movieRepository.findById(movieId).orElseThrow(() -> new NotFoundMovieExc("Movie not found"));
 
@@ -30,15 +30,15 @@ public class ReplyService {
         reply.setMovie(movie);
         reply.setReplyText(replyText);
         replyRepository.save(reply);
-        return ResponseEntity.accepted().body("Reply added successfully!");
+        return "Reply added successfully!";
     }
 
-    public ResponseEntity<?> deleteReply(Long userId, Long movieId) {
+    public String deleteReply(Long userId, Long movieId) {
         Users user = usersRepository.findById(userId).orElseThrow(() -> new NotFoundUserExc("User not found"));
         Movie movie = movieRepository.findById(movieId).orElseThrow(() -> new NotFoundMovieExc("Movie not found"));
 
         replyRepository.deleteByUsersAndMovie(user, movie);
-        return ResponseEntity.accepted().body("Reply deleted successfully!");
+        return "Reply deleted successfully!";
 
     }
 }
