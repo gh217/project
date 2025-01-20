@@ -2,11 +2,17 @@ package com.example.app.controller;
 
 
 import com.example.app.dto.MovieDto;
+import com.example.app.dto.UsersDto;
 import com.example.app.service.MovieService;
 import com.example.app.service.RatingService;
 import com.example.app.service.ReplyService;
+import com.example.app.service.UsersService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.context.properties.bind.DefaultValue;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -19,6 +25,20 @@ public class AdminController {
     private final MovieService movieService;
     private final RatingService ratingService;
     private final ReplyService replyService;
+    private final UsersService usersService;
+
+    @GetMapping("/allUsersPage")
+    public ResponseEntity<Page<UsersDto>> getAllUsers(
+            @RequestParam(defaultValue = "0") int page ,
+            @RequestParam(defaultValue="10") int size
+    ){
+        return ResponseEntity.ok(usersService.getUsers(page,size));
+    }
+
+     /*
+      @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+     */
 
     @PostMapping("/movies")
     public MovieDto createMovie(@RequestParam String title) {
